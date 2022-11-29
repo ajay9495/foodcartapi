@@ -18,7 +18,7 @@ return new class extends Migration
             $table->bigInteger('order_id');
             $table->bigInteger('product_id');
             $table->integer('quantity');
-            $table->string('selling_price');
+            $table->integer('selling_price');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });

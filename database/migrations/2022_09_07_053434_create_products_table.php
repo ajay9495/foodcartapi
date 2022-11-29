@@ -20,9 +20,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('image_url');
             $table->string('description');
-            $table->string('unit');
-            $table->json('mrp');
-            $table->json('selling_price');
+            $table->integer('mrp');
+            $table->integer('selling_price');
             $table->boolean('in_stock');
             $table->boolean('is_active');
             $table->timestamp('created_at')->nullable();
