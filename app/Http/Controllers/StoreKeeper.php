@@ -12,7 +12,8 @@ class StoreKeeper extends BaseController{
         
         $payload = [
             'phone'=> $request[1]['value'],
-            'password' => $request[0]['value']
+            'password' => $request[0]['value'],
+            'store_id' => $request[2]['value']
         ];
 
 
@@ -25,24 +26,36 @@ class StoreKeeper extends BaseController{
         if(count($result) > 0){
 
             $dbPassword = $result[0]->password;
+            $dbStoreId = $result[0]->store_id;
             $userPassword = $payload['password'];
+            $userStoreId = $payload['store_id'];
 
             if($dbPassword ==  $userPassword){
 
-                if($result[0]->is_active){
+                if($dbStoreId == $userStoreId){
 
-                    return response()->json([
-                        "status" => "success",
-                        "message" => "User is Active",
-                        "payload" => $result[0]
-                    ]);
+                    if($result[0]->is_active){
+
+                        return response()->json([
+                            "status" => "success",
+                            "message" => "User is Active",
+                            "payload" => $result[0]
+                        ]);
+                    }
+                    else{
+                        return response()->json([
+                            "status" => "failed",
+                            "message" => "User is inActive"
+                        ]);
+                    }
                 }
                 else{
                     return response()->json([
                         "status" => "failed",
-                        "message" => "User is inActive"
-                    ]);
+                        "message" => "Store ID did not match"
+                    ]); 
                 }
+
             }
             else{
                 return response()->json([
@@ -58,7 +71,6 @@ class StoreKeeper extends BaseController{
             ]);
         }     
     }
-
 
     function postStoreKeeperData(Request $request){
 

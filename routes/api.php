@@ -36,9 +36,9 @@ Route::get('getProductData',[Product::class,'getProductData']);
 Route::get('getProductById',[Product::class,'getProductById']);
 Route::get('getProductDataByStoreId',[Product::class,'getProductDataByStoreId']);
 Route::get('searchProduct',[Product::class,'searchProduct']);
-Route::get('searchProductData',[Product::class,'searchProductData']);
 Route::get('getAllProductsDataByStoreId',[Product::class,'getAllProductsDataByStoreId']);
 Route::get('productInstockChange',[Product::class,'productInstockChange']);
+Route::get('searchInstockProduct',[Product::class,'searchInstockProduct']);
 
 Route::post('postVisitorData',[Visitor::class,'postVisitorData']);
 

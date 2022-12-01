@@ -158,10 +158,4 @@ class Dashboard extends BaseController{
         return $itemQuantity * $unitPrice * $unitQuantity;
     }
 
-
-
-
-
-
-
 }

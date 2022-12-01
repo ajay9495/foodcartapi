@@ -39,7 +39,7 @@ class Order extends BaseController{
                 'order_id'=> $orderId,
                 'product_id'=>$reqOrderArr[$i]['id'],
                 'quantity'=>$reqOrderArr[$i]['quantity'],
-                'selling_price'=>json_encode($reqOrderArr[$i]['current_selling_price']),
+                'selling_price'=>$reqOrderArr[$i]['selling_price'],
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ];
@@ -118,10 +118,10 @@ class Order extends BaseController{
         $req = $request->all();
 
         $result = DB::table('order_details')
-                    ->where('order_id',$req['order_id'])
-                    ->leftjoin('products','order_details.product_id','products.id')
-                    ->select('order_details.quantity','order_details.selling_price as current_selling_price','products.name')
-                    ->get();
+        ->where('order_id',$req['order_id'])
+        ->leftjoin('products','order_details.product_id','products.id')
+        ->select('order_details.quantity','order_details.selling_price','products.name')
+        ->get();
 
         if($result){
             return response()->json([
@@ -187,7 +187,7 @@ class Order extends BaseController{
         $result = DB::table('order_details')
         ->where('order_id',$req['order_id'])
         ->leftjoin('products','order_details.product_id','products.id')
-        ->select('order_details.quantity','order_details.selling_price as current_selling_price','products.name')
+        ->select('order_details.quantity','order_details.selling_price','products.name')
         ->get();
         
         if($result){
@@ -324,10 +324,9 @@ class Order extends BaseController{
 
         for($i = 0; $i< count($arr);$i++ ){
 
-            $item_price = json_decode($arr[$i]->selling_price)->value->price;
-            $item_quantity = json_decode($arr[$i]->selling_price)->value->quantity;
+            $item_price = $arr[$i]->selling_price;
             $quantity = $arr[$i]->quantity;
-            $selling_price = $item_price * $item_quantity * $quantity;
+            $selling_price = $item_price * $quantity;
 
             $sum = $sum + $selling_price;
         }

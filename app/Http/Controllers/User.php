@@ -74,61 +74,59 @@ class User extends BaseController{
 
         $req = $request->all();
 
-        $userStoreId = intval($req[3]['value']);
+
+        $userStoreId = $req[3]['value'];
         $userPhone = $req[0]['value'];
 
-
-
-        $storeDetails = DB::table('store')
-        ->where('id',$userStoreId)
+        $userDetails = DB::table('users')
+        ->where('phone',$userPhone)
         ->get();
 
-        if (count($storeDetails) > 0) {
 
-            $userDetails = DB::table('users')
-            ->where('phone',$userPhone)
-            ->get();
+        if(count($userDetails) > 0){
+            
+            return response()->json([
+                'status' => "failed",
+                'message' => 'Phone number already exists, try another one'
+            ]);
+        }
+        else{
 
-            if(count($userDetails) > 0){
-                
-                return response()->json([
-                    'status' => "failed",
-                    'message' => 'Phone number already exists, try another one'
-                ]);
-            }
-            else{
+            $payload = [
+                'name'=> $req[2]['value'],
+                'phone'=> $req[0]['value'],
+                'password' => $req[1]['value'],
+                'store_id' => $userStoreId,
+                'address' => '',
+                'landmark' => '',
+                'location' => json_encode(['lat'=>'','lng'=>'']),         
+                'is_active'=> true,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
 
-                $payload = [
-                    'name'=> $req[2]['value'],
-                    'phone'=> $req[0]['value'],
-                    'password' => $req[1]['value'],
-                    'store_id' => $userStoreId,
-                    'address' => '',
-                    'landmark' => '',
-                    'location' => json_encode(['lat'=>'','lng'=>'']),         
-                    'is_active'=> true,
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => date('Y-m-d H:i:s')
-                ];
+            $result = DB::table('users')
+            ->insertGetId($payload);
 
-                $result = DB::table('users')
-                ->insertGetId($payload);
+            if($result){
 
                 return response()->json([
                     'status' => "success",
                     'message' => 'succcesfully created user',
                     'payload' => $result
                 ]);
-
             }
+            else{
 
+                return response()->json([
+                    'status' => "failed",
+                    'message' => 'Failed to Register user.',
+                    'payload' => $result
+                ]);
+            }
         }
-        else{
-            return response()->json([
-                'status' => "failed",
-                'message' => 'Invalid store id'
-            ]);
-        }
+
+
 
     }
 

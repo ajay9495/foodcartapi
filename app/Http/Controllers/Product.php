@@ -33,7 +33,6 @@ class Product extends BaseController{
                     "name" => $request['productName'],
                     "category_id" => $request['category'],
                     "description" => $request['description'],
-                    "unit" => $request['unit'],
                     "mrp" => $request['mrp'],
                     "selling_price" => $request['sellingPrice'],
                     "store_id" => $request['storeId'],
@@ -94,7 +93,6 @@ class Product extends BaseController{
                 'name'=> $request['productName'],
                 'image_url'=> $request['imageUrl'],
                 'description'=> $request['description'],
-                'unit'=> $request['unit'],
                 'mrp'=> $request['mrp'],
                 'selling_price'=> $request['sellingPrice'],
                 'updated_at' => date('Y-m-d H:i:s')
@@ -104,16 +102,28 @@ class Product extends BaseController{
             ->where('id', $request['productId'])
             ->update($productPayload);
 
-            return response()->json([
-                "status" => "success",
-                "message" => "Successfully updated data in the server !"
-            ]);
+            if($productResult){
+
+                return response()->json([
+                    "status" => "success",
+                    "message" => "Successfully updated data in the server !"
+                ]);
+            }
+            else{
+
+                return response()->json([
+                    "status" => "failed",
+                    "message" => "Failed to update data in the server !"
+                ]);
+            }
+
+
 
 
         }
         else{
             
-            $imageUploadResult = Storage::put('public/categories', $request->file,'public');
+            $imageUploadResult = Storage::put('public/products', $request->file,'public');
             
             if($imageUploadResult){
 
@@ -135,7 +145,6 @@ class Product extends BaseController{
                         'name'=> $request['productName'],
                         'image_url'=> $imagesPayload["name"],
                         'description'=> $request['description'],
-                        'unit'=> $request['unit'],
                         'mrp'=> $request['mrp'],
                         'selling_price'=> $request['sellingPrice'],
                         'updated_at' => date('Y-m-d H:i:s')
@@ -145,10 +154,20 @@ class Product extends BaseController{
                     ->where('id', $request['productId'])
                     ->update($productPayload);
         
-                    return response()->json([
-                        "status" => "success",
-                        "message" => "Successfully updated data in the server !"
-                    ]);
+                    if($productResult){
+
+                        return response()->json([
+                            "status" => "success",
+                            "message" => "Successfully updated data in the server !"
+                        ]);
+                    }
+                    else{
+        
+                        return response()->json([
+                            "status" => "failed",
+                            "message" => "Failed to update data in the server !"
+                        ]);
+                    }
 
                 }
                 else{
@@ -174,8 +193,6 @@ class Product extends BaseController{
         
 
     }
-
-
 
     function deleteProductData(Request $request){
 
@@ -220,7 +237,7 @@ class Product extends BaseController{
         $req = $request->all();
 
         $result = DB::table('products')
-        ->select('products.id','products.name','products.image_url','products.unit','products.mrp','products.selling_price','categories.id as category_id','categories.name as category_name')
+        ->select('products.id','products.name','products.image_url','products.mrp','products.selling_price','categories.id as category_id','categories.name as category_name')
         ->where('products.is_active',1)
         ->where('products.in_stock',1)
         ->where('products.store_id',$req['store_id'])
@@ -252,7 +269,7 @@ class Product extends BaseController{
         $req = $request->all();
 
         $result = DB::table('products')
-        ->select('products.id','products.name','products.image_url','products.unit','products.mrp','products.selling_price','products.in_stock','categories.id as category_id','categories.name as category_name')
+        ->select('products.id','products.name','products.image_url','products.mrp','products.selling_price','products.in_stock','categories.id as category_id','categories.name as category_name')
         ->where('products.is_active',1)
         ->where('products.store_id',$req['store_id'])
         ->leftjoin('categories','products.category_id','categories.id')
@@ -285,25 +302,28 @@ class Product extends BaseController{
         $result = DB::table('products')
                     ->where('products.id',$req['id'])
                     ->where('products.is_active',1)
-                    ->select('products.id','products.unit','products.name','products.description','products.mrp','products.selling_price','products.image_url','categories.name as category_name','categories.id as category_id')
+                    ->select('products.id','products.name','products.description','products.mrp','products.selling_price','products.image_url','categories.name as category_name','categories.id as category_id')
                     ->leftjoin('categories','products.category_id','categories.id')
                     ->get();
+
         
-        return response()->json($result[0]);
-    }
+        if($result){
 
-    function searchProductData(Request $request){
+            return response()->json([
+                "status" => "success",
+                "message" => "Successfully got data from the server.",
+                "payload" => $result[0]
+            ]);
+        }
+        else{
 
-        $req = $request->all();
-
-        $result  = DB::table('products')
-                    ->where('products.name', 'like', "%{$req['search']}%")
-                    ->where('products.is_active',1)
-                    ->select('products.id','products.unit','products.name','products.mrp','products.selling_price','products.image_url','categories.name as category')
-                    ->leftjoin('categories','products.category_id','categories.id')
-                    ->get();
-
-        return $result;
+            return response()->json([
+                "status" => "failed",
+                "message" => "Failed to get data from the server."
+            ]);
+        }
+        
+        
     }
 
     function searchProduct(Request $request){
@@ -314,7 +334,38 @@ class Product extends BaseController{
         ->where('products.name', 'like', "%{$req['search']}%")
         ->where('products.store_id', $req['store_id'])
         ->where('products.is_active',1)
-        ->select('products.id','products.unit','products.name','products.mrp','products.selling_price','products.image_url','categories.name as category')
+        ->where('products.in_stock',1)
+        ->select('products.id','products.name','products.mrp','products.selling_price','products.in_stock','products.image_url','categories.name as category')
+        ->leftjoin('categories','products.category_id','categories.id')
+        ->get();
+
+        if($result){
+            
+            return response()->json([
+                "status" => "success",
+                "message" => "Successfully fetched data from the server",
+                "payload" => $result
+            ]);
+        }
+        else{
+            return response()->json([
+                "status" => "failed",
+                "message" => "Failed to fetch data from the server"
+            ]);
+        }
+
+    }
+
+    function searchInstockProduct(Request $request){
+
+        $req = $request->all();
+
+        $result  = DB::table('products')
+        ->where('products.name', 'like', "%{$req['search']}%")
+        ->where('products.store_id', $req['store_id'])
+        ->where('products.is_active',1)
+        ->where('products.in_stock',1)
+        ->select('products.id','products.name','products.mrp','products.selling_price','products.in_stock','products.image_url','categories.name as category')
         ->leftjoin('categories','products.category_id','categories.id')
         ->get();
 
