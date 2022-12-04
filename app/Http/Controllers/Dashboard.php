@@ -17,9 +17,6 @@ class Dashboard extends BaseController{
 
         $storeId = $request["store_id"];
 
-        return response()->json($this->getTotalMonthlySales($storeId));
-
-
         $result = [
             'dailyVisitorsBreakdown'  => $this->getDailyVisitorsBreakDown($storeId),
             'dailySalesBreakdown' => $this->getDailySalesBreakDown($storeId),
