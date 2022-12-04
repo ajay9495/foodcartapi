@@ -14,6 +14,8 @@ class Dashboard extends BaseController{
 
     function getAdminDashboardData(Request $request){
 
+
+
         $storeId = $request["store_id"];
 
         $result = [
@@ -22,6 +24,7 @@ class Dashboard extends BaseController{
             'monthlyVisitors' => $this->getTotalMonthlyVisit($storeId),
             'monthlySales' => $this->getTotalMonthlySales($storeId)
         ];
+
 
         if($result){
 
@@ -97,6 +100,7 @@ class Dashboard extends BaseController{
             ];
         });
 
+
         return array_values($ordersResult->toArray());
 
     }
@@ -133,16 +137,10 @@ class Dashboard extends BaseController{
 
     function getSalesSum($item){
 
-        $sum  = [];
-        $sellingPrice = [];
         $total = 0;
         for($i = 0; $i < count($item); $i++){
 
-            $sellingPrice = json_decode($item[$i]->selling_price);
-            $unitPrice = intval($sellingPrice->value->price);
-            $unitQuantity = intval($sellingPrice->value->quantity);
-
-            $total = $total + $unitPrice * $unitQuantity * $item[$i]->quantity;
+            $total = $total + $item[$i]->selling_price * $item[$i]->quantity;
         }
 
         return $total;
