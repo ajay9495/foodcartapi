@@ -150,12 +150,10 @@ class Dashboard extends BaseController{
 
     function getTotalSales($item){
 
-        $sellingPrice = json_decode($item->selling_price);
-        $unitPrice = intval($sellingPrice->value->price);
-        $unitQuantity = intval($sellingPrice->value->quantity);
+        $sellingPrice =$item->selling_price;
         $itemQuantity = $item->quantity;
 
-        return $itemQuantity * $unitPrice * $unitQuantity;
+        return $itemQuantity * $sellingPrice;
     }
 
 }
