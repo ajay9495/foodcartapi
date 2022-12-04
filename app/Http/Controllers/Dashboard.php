@@ -14,7 +14,7 @@ class Dashboard extends BaseController{
 
     function getAdminDashboardData(Request $request){
 
-
+        return response()->json("test response");
 
         $storeId = $request["store_id"];
 
