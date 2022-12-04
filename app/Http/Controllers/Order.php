@@ -75,7 +75,7 @@ class Order extends BaseController{
 
         $req = $request->all();
 
-        $startDate = date('Y-m-d',strtotime('-9 days')).' 01:00:00';
+        $startDate = date('Y-m-d',strtotime('-5 days')).' 01:00:00';
         $endDate = date('Y-m-d').' 23:00:00';
 
         $result = DB::table('orders')
