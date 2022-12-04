@@ -334,7 +334,6 @@ class Product extends BaseController{
         ->where('products.name', 'like', "%{$req['search']}%")
         ->where('products.store_id', $req['store_id'])
         ->where('products.is_active',1)
-        ->where('products.in_stock',1)
         ->select('products.id','products.name','products.mrp','products.selling_price','products.in_stock','products.image_url','categories.name as category')
         ->leftjoin('categories','products.category_id','categories.id')
         ->get();
