@@ -16,6 +16,10 @@ use App\Http\Controllers\User;
 use App\Http\Controllers\SuperAdmin;
 use App\Http\Controllers\Delivery;
 use App\Http\Controllers\StoreKeeper;
+use App\Http\Controllers\Notification;
+
+
+Route::post('postFCMtoken',[Notification::class,'postFCMtoken']);
 
 
 Route::post('PostStoreData',[Store::class,'PostStoreData']);
