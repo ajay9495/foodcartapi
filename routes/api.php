@@ -19,7 +19,7 @@ use App\Http\Controllers\StoreKeeper;
 use App\Http\Controllers\Notification;
 
 
-Route::post('postFCMtoken',[Notification::class,'postFCMtoken']);
+Route::post('postStoreKeeperToken',[Notification::class,'postStoreKeeperToken']);
 
 
 Route::post('PostStoreData',[Store::class,'PostStoreData']);
