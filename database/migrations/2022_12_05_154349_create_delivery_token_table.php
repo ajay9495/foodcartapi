@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('fcm_token', function (Blueprint $table) {
+        Schema::create('delivery_token', function (Blueprint $table) {
+
             $table->bigIncrements('id');
-            $table->string('user_id');
+            $table->string('delivery_id');
+            $table->string('store_id');
             $table->string('token');
-            $table->boolean('is_active');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
+
         });
     }
 
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fcm_token');
+        Schema::dropIfExists('delivery_token');
     }
 };

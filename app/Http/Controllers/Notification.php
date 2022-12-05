@@ -11,6 +11,8 @@ class Notification extends BaseController{
         
         $req = $request->all(); 
 
+        
+
         return response()->json([
             "status" => "success",
             "message" => "laravel response",
