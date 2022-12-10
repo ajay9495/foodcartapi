@@ -84,7 +84,6 @@ class Order extends BaseController{
         ->leftjoin('order_details','orders.id','order_details.order_id')
         ->select('orders.status',DB::raw('DATE(orders.created_at) as date'),'order_details.product_id','order_details.order_id','order_details.quantity','order_details.selling_price')
         ->orderBy('orders.id', 'asc')
-        ->limit(10)
         ->get()
         ->groupBy('order_id')
         ->map(function($item){
