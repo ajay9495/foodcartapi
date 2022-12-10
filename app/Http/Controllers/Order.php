@@ -119,8 +119,8 @@ class Order extends BaseController{
 
         $result = DB::table('order_details')
         ->where('order_id',$req['order_id'])
-        ->leftjoin('products','order_details.product_id','products.id','products.image_url')
-        ->select('order_details.quantity','order_details.selling_price','products.name')
+        ->leftjoin('products','order_details.product_id','products.id')
+        ->select('order_details.quantity','order_details.selling_price','products.name','products.image_url')
         ->get();
 
         if($result){
