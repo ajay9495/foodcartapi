@@ -58,7 +58,7 @@ class Order extends BaseController{
 
             $notificationController = app('App\Http\Controllers\Notification');
 
-            $notificationController->sendDeliveryNotification("user_id", "notificationArray");
+            $notificationController->sendDeliveryNotification($request['store_id']);
 
             return response()->json([
                 "status" => "success",

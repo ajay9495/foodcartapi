@@ -110,8 +110,11 @@ class Notification extends BaseController{
         
     }
 
-    function sendDeliveryNotification($user_id, $notificationArray){
+    function sendDeliveryNotification($store_id){
         
+        return response()->json(
+            $this->deliveryPartnersOfTheStore($store_id)
+        );
 
         $to = "fSGnzR2dTGOf6dGqLOjO0T:APA91bHngVjTZ9l1YrI6KGQeAroYeEet1FgFr3mPWwDYzTJrH_5ykF0N8kYwoYqCIXNXGcV29LKM1eyvYkxOr0AOKMTqmAJMtJ-tjW0C3ffd44rv8viuu5J1EmcsF4MVuieo_p6Jn-BR";
         $notificationArray = [
@@ -141,6 +144,14 @@ class Notification extends BaseController{
         
         curl_close($ch);
         
+    }
+
+
+
+
+    function deliveryPartnersOfTheStore($store_id){
+
+        return $store_id;
     }
 
 
