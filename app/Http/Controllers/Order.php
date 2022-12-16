@@ -57,11 +57,11 @@ class Order extends BaseController{
         
         if($result){
 
-            // $this->sendDeliveryNotification("user_id", "notificationArray");
+            $this->sendDeliveryNotification("user_id", "notificationArray");
 
             return response()->json([
                 "status" => "success",
-                "message" => "Successfully posted data in the server"
+                "message" => "Successfully posted data in the server and sent notification"
             ]);
         }
         else{
@@ -328,7 +328,7 @@ class Order extends BaseController{
         curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        
+
         $data = array('to' => $to, 'notification' => $notificationArray);
         $json_data = json_encode($data);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);        
