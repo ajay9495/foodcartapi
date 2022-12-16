@@ -21,6 +21,7 @@ use App\Http\Controllers\Notification;
 
 Route::post('postStoreKeeperToken',[Notification::class,'postStoreKeeperToken']);
 Route::post('postDeliveryToken',[Notification::class,'postDeliveryToken']);
+Route::post('postUserToken',[Notification::class,'postUserToken']);
 
 
 Route::post('PostStoreData',[Store::class,'PostStoreData']);
