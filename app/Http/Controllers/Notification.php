@@ -149,6 +149,11 @@ class Notification extends BaseController{
 
     function getDeliveryPartnersOfTheStore($store_id){
 
+        $result = DB::table("delivery_token")
+        ->where('store_id',$store_id)
+        ->select('token')
+        ->get();
+
         return $store_id;
     }
 
