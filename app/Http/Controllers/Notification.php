@@ -112,42 +112,61 @@ class Notification extends BaseController{
 
     function sendDeliveryNotification(Request $request){
 
-        $url = 'https://fcm.googleapis.com/fcm/send';
-        $data = [
-            "to" => "fSGnzR2dTGOf6dGqLOjO0T:APA91bHngVjTZ9l1YrI6KGQeAroYeEet1FgFr3mPWwDYzTJrH_5ykF0N8kYwoYqCIXNXGcV29LKM1eyvYkxOr0AOKMTqmAJMtJ-tjW0C3ffd44rv8viuu5J1EmcsF4MVuieo_p6Jn-BR",
-            "notification" => [
-                "body" => "test body",
-                "title" => "test title",
-                "subtitle" => "subtitle"
-            ]
+        // $url = 'https://fcm.googleapis.com/fcm/send';
+        // $data = [
+        //     "to" => "fSGnzR2dTGOf6dGqLOjO0T:APA91bHngVjTZ9l1YrI6KGQeAroYeEet1FgFr3mPWwDYzTJrH_5ykF0N8kYwoYqCIXNXGcV29LKM1eyvYkxOr0AOKMTqmAJMtJ-tjW0C3ffd44rv8viuu5J1EmcsF4MVuieo_p6Jn-BR",
+        //     "notification" => [
+        //         "body" => "test body",
+        //         "title" => "test title",
+        //         "subtitle" => "subtitle"
+        //     ]
+        // ];
+        
+        // $options = array(
+        //     'http' => array(
+        //         'header'  => "Content-type: application/x-www-form-urlencoded\r\nContent-Length: key=AAAANoAR07U:APA91bF9IurQzPd2UEfXBR18ezSsCM1G8AAIyHNRABNXQf8ttwXLm2uJiyzpl8_9z_KaHVfZ3yxhaj8TQSnXqlaVl-XfR-_H4xkNAYAK6qje20iP5q-5kORRhggeAjEJyEWXukoZQ1hz\r\n",
+        //         'method'  => 'POST',
+        //         'content' => http_build_query($data)
+        //     )
+        // );
+        // $context  = stream_context_create($options);
+        // $result = file_get_contents($url, false, $context);
+        
+        $ch = curl_init();
+
+        $to = "fSGnzR2dTGOf6dGqLOjO0T:APA91bHngVjTZ9l1YrI6KGQeAroYeEet1FgFr3mPWwDYzTJrH_5ykF0N8kYwoYqCIXNXGcV29LKM1eyvYkxOr0AOKMTqmAJMtJ-tjW0C3ffd44rv8viuu5J1EmcsF4MVuieo_p6Jn-BR";
+        $notificationArray = [
+            "body" => "test body",
+            "title" => "test title",
+            "subtitle" => "subtitle"
         ];
+
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, 1);
+
+        $data = array('to' => $to, 'notification' => $notificationArray);
+        $json_data = json_encode($data);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);        
         
-        $options = array(
-            'http' => array(
-                'header'  => "Content-type: application/x-www-form-urlencoded\r\nContent-Length: key=AAAANoAR07U:APA91bF9IurQzPd2UEfXBR18ezSsCM1G8AAIyHNRABNXQf8ttwXLm2uJiyzpl8_9z_KaHVfZ3yxhaj8TQSnXqlaVl-XfR-_H4xkNAYAK6qje20iP5q-5kORRhggeAjEJyEWXukoZQ1hz\r\n",
-                'method'  => 'POST',
-                'content' => http_build_query($data)
-            )
+        // Set headers
+        $headers = array(
+            'Content-Type: application/json',
+            'Authorization: key=AAAANoAR07U:APA91bF9IurQzPd2UEfXBR18ezSsCM1G8AAIyHNRABNXQf8ttwXLm2uJiyzpl8_9z_KaHVfZ3yxhaj8TQSnXqlaVl-XfR-_H4xkNAYAK6qje20iP5q-5kORRhggeAjEJyEWXukoZQ1hz',
+            'Content-Length: ' . strlen($json_data)
         );
-        $context  = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         
-        if ($result === FALSE) { 
+        $result = curl_exec($ch);
+        
+        curl_close($ch);
+        
 
-            return response()->json([
-                "status" => "failed",
-                "message" => "failed to post data",
-                "payload" => $result
-            ]);
-        }
-        else{
-
-            return response()->json([
-                "status" => "success",
-                "message" => "successfully posted data",
-                "payload" => $result
-            ]);
-        }
+        return response()->json([
+            "status" => "success",
+            "message" => "failed to post data",
+            "payload" => $result
+        ]);
 
 
 
