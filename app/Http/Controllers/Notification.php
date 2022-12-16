@@ -113,12 +113,12 @@ class Notification extends BaseController{
     function sendDeliveryNotification($user_id, $notificationArray){
         
 
-        // $to = "fSGnzR2dTGOf6dGqLOjO0T:APA91bHngVjTZ9l1YrI6KGQeAroYeEet1FgFr3mPWwDYzTJrH_5ykF0N8kYwoYqCIXNXGcV29LKM1eyvYkxOr0AOKMTqmAJMtJ-tjW0C3ffd44rv8viuu5J1EmcsF4MVuieo_p6Jn-BR";
-        // $notificationArray = [
-        //     "body" => "test body",
-        //     "title" => "test title",
-        //     "subtitle" => "subtitle"
-        // ];
+        $to = "fSGnzR2dTGOf6dGqLOjO0T:APA91bHngVjTZ9l1YrI6KGQeAroYeEet1FgFr3mPWwDYzTJrH_5ykF0N8kYwoYqCIXNXGcV29LKM1eyvYkxOr0AOKMTqmAJMtJ-tjW0C3ffd44rv8viuu5J1EmcsF4MVuieo_p6Jn-BR";
+        $notificationArray = [
+            "body" => "test body",
+            "title" => "test title",
+            "subtitle" => "subtitle"
+        ];
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');

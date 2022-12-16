@@ -57,6 +57,8 @@ class Order extends BaseController{
         
         if($result){
 
+            Notification->sendDeliveryNotification("user_id", "notificationArray");
+
             return response()->json([
                 "status" => "success",
                 "message" => "Successfully poseted data in the server"
