@@ -152,7 +152,11 @@ class Notification extends BaseController{
         $result = DB::table("delivery_token")
         ->where('store_id',$store_id)
         ->select('token')
-        ->get();
+        ->get()
+        ->map(function ($item) {
+            return $item->token;
+        });
+        
 
         return $result;
     }
