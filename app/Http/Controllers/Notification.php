@@ -145,7 +145,7 @@ class Notification extends BaseController{
 
             return response()->json([
                 "status" => "success",
-                "message" => "failed to post data"
+                "message" => "successfully sent notification"
             ]);
         }
         else{
