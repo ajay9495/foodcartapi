@@ -112,10 +112,45 @@ class Notification extends BaseController{
 
     function sendDeliveryNotification(Request $request){
 
-        return response()->json([
-            "status" => "success",
-            "message" => "successfully posted data"
-        ]);
+        $url = 'https://fcm.googleapis.com/fcm/send';
+        $data = [
+            "to" => "fSGnzR2dTGOf6dGqLOjO0T:APA91bHngVjTZ9l1YrI6KGQeAroYeEet1FgFr3mPWwDYzTJrH_5ykF0N8kYwoYqCIXNXGcV29LKM1eyvYkxOr0AOKMTqmAJMtJ-tjW0C3ffd44rv8viuu5J1EmcsF4MVuieo_p6Jn-BR",
+            "notification" => [
+                "body" => "test body",
+                "title" => "test title",
+                "subtitle" => "subtitle"
+            ]
+        ];
+        
+        $options = array(
+            'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($data)
+            )
+        );
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        
+        if ($result === FALSE) { 
+
+            return response()->json([
+                "status" => "failed",
+                "message" => "failed to post data",
+                "payload" => $result
+            ]);
+        }
+        else{
+
+            return response()->json([
+                "status" => "success",
+                "message" => "successfully posted data",
+                "payload" => $result
+            ]);
+        }
+
+
+
     }
 
 }
