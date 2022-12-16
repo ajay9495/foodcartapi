@@ -57,7 +57,7 @@ class Order extends BaseController{
         
         if($result){
 
-            $this->sendDeliveryNotification("user_id", "notificationArray");
+            // $this->sendDeliveryNotification("user_id", "notificationArray");
 
             return response()->json([
                 "status" => "success",
@@ -344,11 +344,6 @@ class Order extends BaseController{
         
         curl_close($ch);
         
-        return response()->json([
-            "status" => "success",
-            "message" => "Successfully posted data in the server"
-        ]);
-
     }
 
     
