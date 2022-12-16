@@ -57,7 +57,7 @@ class Order extends BaseController{
         
         if($result){
 
-            $this->sendDeliveryNotification("user_id", "notificationArray");
+            $result = $this->sendDeliveryNotification("user_id", "notificationArray");
 
             return response()->json([
                 "status" => "success",
