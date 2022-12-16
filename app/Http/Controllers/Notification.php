@@ -126,7 +126,7 @@ class Notification extends BaseController{
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        $data = array('to' => $registration_ids, 'notification' => $notificationArray);
+        $data = array('registration_ids' => $registration_ids, 'notification' => $notificationArray);
         $json_data = json_encode($data);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);        
         
