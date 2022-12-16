@@ -110,6 +110,14 @@ class Notification extends BaseController{
         
     }
 
+    function sendDeliveryNotification(Request $request){
+
+        return response()->json([
+            "status" => "success",
+            "message" => "successfully posted data"
+        ]);
+    }
+
 }
 
 
