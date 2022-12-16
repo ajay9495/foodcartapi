@@ -63,7 +63,7 @@ class Order extends BaseController{
             return response()->json([
                 "status" => "success",
                 "message" => "Successfully posted data in the server and sent notification via app method",
-                "payload" => notifResult
+                "payload" => $notifResult
             ]);
         }
         else{
