@@ -154,7 +154,7 @@ class Notification extends BaseController{
         ->select('token')
         ->get();
 
-        return $store_id;
+        return $result;
     }
 
 
