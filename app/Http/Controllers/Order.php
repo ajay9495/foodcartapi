@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Notification;
 
  
 class Order extends BaseController{
@@ -52,12 +51,14 @@ class Order extends BaseController{
 
 
         $result = DB::table('order_details') 
-                    ->insert($ordersList);
+        ->insert($ordersList);
 
         
         if($result){
 
-            $this->sendDeliveryNotification("user_id", "notificationArray");
+            $notificationController = app('App\Http\Controllers\Notification');
+
+            $notificationController->sendDeliveryNotification("user_id", "notificationArray");
 
             return response()->json([
                 "status" => "success",
@@ -314,38 +315,6 @@ class Order extends BaseController{
     }
 
 
-    function sendDeliveryNotification($user_id, $notificationArray){
-        
-
-        $to = "fSGnzR2dTGOf6dGqLOjO0T:APA91bHngVjTZ9l1YrI6KGQeAroYeEet1FgFr3mPWwDYzTJrH_5ykF0N8kYwoYqCIXNXGcV29LKM1eyvYkxOr0AOKMTqmAJMtJ-tjW0C3ffd44rv8viuu5J1EmcsF4MVuieo_p6Jn-BR";
-        $notificationArray = [
-            "body" => "test body",
-            "title" => "test title",
-            "subtitle" => "subtitle"
-        ];
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $data = array('to' => $to, 'notification' => $notificationArray);
-        $json_data = json_encode($data);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);        
-        
-        // Set headers
-        $headers = array(
-            'Content-Type: application/json',
-            'Authorization: key=AAAANoAR07U:APA91bF9IurQzPd2UEfXBR18ezSsCM1G8AAIyHNRABNXQf8ttwXLm2uJiyzpl8_9z_KaHVfZ3yxhaj8TQSnXqlaVl-XfR-_H4xkNAYAK6qje20iP5q-5kORRhggeAjEJyEWXukoZQ1hz',
-            'Content-Length: ' . strlen($json_data)
-        );
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        
-        $result = curl_exec($ch);
-        
-        curl_close($ch);
-        
-    }
 
     
     function getSum($arr){
