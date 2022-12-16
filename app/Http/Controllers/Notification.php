@@ -141,20 +141,20 @@ class Notification extends BaseController{
         
         curl_close($ch);
         
-        if($result){
+        // if($result){
 
-            return response()->json([
-                "status" => "success",
-                "message" => "successfully sent notification"
-            ]);
-        }
-        else{
+        //     return response()->json([
+        //         "status" => "success",
+        //         "message" => "successfully sent notification"
+        //     ]);
+        // }
+        // else{
 
-            return response()->json([
-                "status" => "failed",
-                "message" => "failed to post data"
-            ]);
-        }
+        //     return response()->json([
+        //         "status" => "failed",
+        //         "message" => "failed to post data"
+        //     ]);
+        // }
 
 
     }
