@@ -112,36 +112,41 @@ class Notification extends BaseController{
 
     function sendDeliveryNotification($store_id){
         
+        try{
+            // $to = $this->getDeliveryPartnersOfTheStore($store_id);
+            $registration_ids = $this->getDeliveryPartnersOfTheStore($store_id);
+            $notificationArray = [
+                "body" => "test array",
+                "title" => "test array",
+                "subtitle" => "array"
+            ];
 
-        // $to = $this->getDeliveryPartnersOfTheStore($store_id);
-        $registration_ids = $this->getDeliveryPartnersOfTheStore($store_id);
-        $notificationArray = [
-            "body" => "test array",
-            "title" => "test array",
-            "subtitle" => "array"
-        ];
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $data = array('registration_ids' => $registration_ids, 'notification' => $notificationArray);
+            $json_data = json_encode($data);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);        
+            
+            // Set headers
+            $headers = array(
+                'Content-Type: application/json',
+                'Authorization: key=AAAANoAR07U:APA91bF9IurQzPd2UEfXBR18ezSsCM1G8AAIyHNRABNXQf8ttwXLm2uJiyzpl8_9z_KaHVfZ3yxhaj8TQSnXqlaVl-XfR-_H4xkNAYAK6qje20iP5q-5kORRhggeAjEJyEWXukoZQ1hz',
+                'Content-Length: ' . strlen($json_data)
+            );
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            
+            $result = curl_exec($ch);
+            
+            curl_close($ch);
+        
+        } catch (Exception $e) {
+            // empty error block
+        }
 
-        $data = array('registration_ids' => $registration_ids, 'notification' => $notificationArray);
-        $json_data = json_encode($data);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);        
-        
-        // Set headers
-        $headers = array(
-            'Content-Type: application/json',
-            'Authorization: key=AAAANoAR07U:APA91bF9IurQzPd2UEfXBR18ezSsCM1G8AAIyHNRABNXQf8ttwXLm2uJiyzpl8_9z_KaHVfZ3yxhaj8TQSnXqlaVl-XfR-_H4xkNAYAK6qje20iP5q-5kORRhggeAjEJyEWXukoZQ1hz',
-            'Content-Length: ' . strlen($json_data)
-        );
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        
-        $result = curl_exec($ch);
-        
-        curl_close($ch);
-        
+
     }
 
 
