@@ -156,7 +156,7 @@ class Notification extends BaseController{
             $registration_ids = $this->getStoreKeepersOfTheStore($store_id);
             $notificationArray = [
                 "body" => "New order received ! waiting for fulfillment.",
-                "title" => "New delivery request",
+                "title" => "New order received",
                 "subtitle" => "array"
             ];
 
