@@ -214,6 +214,8 @@ class Order extends BaseController{
 
         $req = $request->all();
 
+        return response($req);
+
     
         $result  = DB::table("orders")
         ->where("id",$req["order_id"])
