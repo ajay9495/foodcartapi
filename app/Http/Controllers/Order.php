@@ -56,11 +56,13 @@ class Order extends BaseController{
         
         if($result){
 
+            $notificationController = app('App\Http\Controllers\Notification');
+            $notifResult = $notificationController->sendStoreKeeperNotification($request['store_id']);
+
 
             return response()->json([
                 "status" => "success",
-                "message" => "Successfully posted data in the server and sent notification via app method",
-                "payload" => $notifResult
+                "message" => "Successfully posted data in the server and sent notification via app method"
             ]);
         }
         else{
