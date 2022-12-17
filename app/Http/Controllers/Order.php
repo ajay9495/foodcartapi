@@ -212,8 +212,6 @@ class Order extends BaseController{
 
         $req = $request->all();
 
-        return response()->json($req);
-
         $result  = DB::table("orders")
         ->where("id",$req["order_id"])
         ->updateGetId(["status" => "fulfilled"], 'id');
