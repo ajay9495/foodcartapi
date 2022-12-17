@@ -220,12 +220,10 @@ class Order extends BaseController{
         ]);
 
 
-        return response()->json($req);
-
         if($result){
 
             $notificationController = app('App\Http\Controllers\Notification');
-            $notifResult = $notificationController->sendDeliveryNotification($request['store_id']);
+            $notifResult = $notificationController->sendDeliveryNotification($req['store_id']);
 
             return response()->json([
                 "status" => "success"
