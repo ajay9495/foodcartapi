@@ -212,6 +212,8 @@ class Order extends BaseController{
 
         $req = $request->all();
 
+        return response()->json($req);
+
         $result  = DB::table("orders")
         ->where("id",$req["order_id"])
         ->update([
@@ -223,8 +225,6 @@ class Order extends BaseController{
 
             $notificationController = app('App\Http\Controllers\Notification');
             $notifResult = $notificationController->sendDeliveryNotification($request['store_id']);
-
-            return response()->json($req);
 
             return response()->json([
                 "status" => "success"
