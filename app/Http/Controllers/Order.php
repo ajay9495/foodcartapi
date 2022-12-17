@@ -220,7 +220,7 @@ class Order extends BaseController{
         ]);
 
 
-        return response()->json($result);
+        return response()->json($result->store_id);
 
         if($result){
 
