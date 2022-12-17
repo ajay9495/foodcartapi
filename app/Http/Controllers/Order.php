@@ -212,13 +212,16 @@ class Order extends BaseController{
 
         $req = $request->all();
 
+    
         $result  = DB::table("orders")
         ->where("id",$req["order_id"])
-        ->updateGetId(["status" => "fulfilled"], 'id');
+        ->update([
+            "status" => "fulfilled"
+        ]);
+
 
         return response()->json($result);
 
-        
         if($result){
 
             $notificationController = app('App\Http\Controllers\Notification');
