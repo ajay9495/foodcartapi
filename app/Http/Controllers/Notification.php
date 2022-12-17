@@ -205,7 +205,7 @@ class Notification extends BaseController{
 
     function getStoreKeepersOfTheStore($store_id){
 
-        $result = DB::table("store_keeper")
+        $result = DB::table("store_keeper_token")
         ->where('store_id',$store_id)
         ->select('token')
         ->get()
