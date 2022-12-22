@@ -252,7 +252,7 @@ class Order extends BaseController{
         ->where('orders.status','!=','completed')
         ->whereBetween('orders.created_at',[$startDate,$endDate])
         ->leftjoin('users','orders.user_id','users.id')
-        ->select('orders.status','orders.id as order_id','users.name','users.location','users.address','users.landmark','users.id as user_id')
+        ->select('orders.status','orders.id as order_id','users.name','users.location','users.address','users.phone','users.landmark','users.id as user_id')
         ->get();
 
         if($result){
