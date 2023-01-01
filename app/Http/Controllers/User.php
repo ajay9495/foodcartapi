@@ -175,6 +175,30 @@ class User extends BaseController{
 
     }
 
+    function getUserData(Request $request){
+
+        $req = $request->all();
+
+        $result =  DB::table('users')
+        ->select('name')
+        ->find($req["user_id"]);
+
+        if($result){
+            return response()->json([
+                "status" => "success",
+                "message" => "successfully got data from the server.",
+                "payload" => $result
+            ]);
+        }
+        else{
+            return response()->json([
+                "status" => "failed",
+                "message" => "failed to get data from the server."
+            ]);
+        }
+
+    }
+
 
     function processQueryResultWithId($result){
 

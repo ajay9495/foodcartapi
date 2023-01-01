@@ -69,6 +69,7 @@ Route::post('RegisterUser',[User::class,'RegisterUser']);
 Route::post('LoginUser',[User::class,'LoginUser']);
 Route::post('SetToken',[User::class,'SetToken']);
 Route::post('postAddressData',[User::class,'postAddressData']);
+Route::get('getUserData',[User::class,'getUserData']);
 
 
 Route::post('Login',[Admin::class,'Login']);
