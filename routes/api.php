@@ -61,6 +61,8 @@ Route::get('getOrderPlacedDetails',[Order::class,'getOrderPlacedDetails']);
 Route::post('postOrderData',[Order::class,'postOrderData']);
 Route::post('setOrderFulfilled',[Order::class,'setOrderFulfilled']);
 Route::get('getOrdersToBeCompleted',[Order::class,'getOrdersToBeCompleted']);
+Route::post('storeKeeperAcceptOrder',[Order::class,'storeKeeperAcceptOrder']);
+Route::post('storeKeeperRejectOrder',[Order::class,'storeKeeperRejectOrder']);
 
 
 Route::post('postFeedbackData',[Feedback::class,'postFeedbackData']);

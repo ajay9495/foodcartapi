@@ -149,11 +149,17 @@ class Order extends BaseController{
         $startDate = date('Y-m-d',strtotime('-30 days')).' 01:00:00';
         $endDate = date('Y-m-d').' 23:00:00';
 
+
         $result = DB::table('orders')
-        ->where('orders.status','orderPlaced')
         ->whereBetween('orders.created_at',[$startDate,$endDate])
+        ->where(function($query)
+        {
+            $query->where('orders.status','orderPlaced')
+            ->orWhere('orders.status','accepted');
+        })
+        ->leftJoin('users','orders.user_id','users.id')
         ->leftjoin('order_details','orders.id','order_details.order_id')
-        ->select(DB::raw('DATE(orders.created_at) as date'),'order_details.product_id','order_details.order_id','order_details.quantity','order_details.selling_price')
+        ->select(DB::raw('DATE(orders.created_at) as date'),'orders.status','order_details.product_id','order_details.order_id','order_details.quantity','order_details.selling_price','users.address','users.landmark','users.phone')
         ->get()
         ->groupBy('order_id')
         ->map(function($item){
@@ -161,8 +167,13 @@ class Order extends BaseController{
                 'price' => $this->getSum($item),
                 'order_id' => $item[0]->order_id,
                 'date' => $item[0]->date,
+                'address' => $item[0]->address,
+                'phone' => $item[0]->phone,
+                'landmark' => $item[0]->landmark,
+                'status' => $item[0]->status
             ];
         });
+
 
         if($result){
 
@@ -321,7 +332,53 @@ class Order extends BaseController{
 
     }
 
+    function storeKeeperAcceptOrder(Request $request){
 
+        $req = $request->all();
+
+        $result  = DB::table("orders")
+        ->where("id",$req["order_id"])
+        ->update([
+            "status" => "accepted"
+        ]);
+
+        if($result){
+
+            return response()->json([
+                "status" => "success"
+            ]);
+        }
+        else{
+            return response()->json([
+                "status" => "failed"
+            ]);
+        }
+ 
+    }
+
+    function storeKeeperRejectOrder(Request $request){
+
+        $req = $request->all();
+
+        $result  = DB::table("orders")
+        ->where("id",$req["order_id"])
+        ->update([
+            "status" => "rejected"
+        ]);
+
+        if($result){
+
+            return response()->json([
+                "status" => "success"
+            ]);
+        }
+        else{
+            return response()->json([
+                "status" => "failed"
+            ]);
+        }
+ 
+    }
 
     
     function getSum($arr){
