@@ -15,9 +15,22 @@ class Visitor extends BaseController{
                     'store_id' =>  $request['store_id'],
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
-                ]);
+        ]);
 
-        return $this->processQueryResult($result);
+        if($result){
+
+            return response()->json([
+                "status" => "success"
+            ]);
+
+        }
+        else{
+            return response()->json([
+                "status" => "failed"
+            ]);
+        }
+
+        
     }
 
     function processQueryResult($result){
